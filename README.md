@@ -120,3 +120,33 @@ dans server.js :
 fs.readFileSync instruction bloquante ---> utilisation de fs.createReadStream
 
 changement du middleware moins verbeux, plus court avec morgen et ajout d'un middleware d'erreur pour les gerer
+
+--> Build de l'image après modification du code, pas de changement de taille ni de temps car il dépend du dockerFile.
+
+PS C:\Users\lulu1\Documents\Importants\M2\docker\tpdockeroptimisation> docker build -t tp-optimisation .
+[+] Building 35.3s (11/11) FINISHED                                                                                                                  docker:desktop-linux
+ => [internal] load build definition from dockerfile                                                                                                                 0.1s
+ => => transferring dockerfile: 343B                                                                                                                                 0.0s
+ => [internal] load metadata for docker.io/library/node:20                                                                                                           1.5s
+ => [internal] load .dockerignore                                                                                                                                    0.0s
+ => => transferring context: 2B                                                                                                                                      0.0s
+ => [1/6] FROM docker.io/library/node:20@sha256:abcf9c98af22ea2c5d33435143d9d8a5f6f191e1e1938a7650fc8b78c382b5a9                                                     0.1s 
+ => => resolve docker.io/library/node:20@sha256:abcf9c98af22ea2c5d33435143d9d8a5f6f191e1e1938a7650fc8b78c382b5a9                                                     0.0s 
+ => [internal] load build context                                                                                                                                    0.6s 
+ => => transferring context: 375.00kB                                                                                                                                0.6s
+ => CACHED [2/6] WORKDIR /app                                                                                                                                        0.0s
+ => [3/6] COPY . /app                                                                                                                                                3.4s 
+ => [4/6] RUN npm install                                                                                                                                            6.2s
+ => [5/6] RUN apt-get update && apt-get install -y build-essential ca-certificates locales && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen              16.5s 
+ => [6/6] RUN npm run build                                                                                                                                          0.8s 
+ => exporting to image                                                                                                                                               5.6s 
+ => => exporting layers                                                                                                                                              3.3s 
+ => => exporting manifest sha256:4456718eadffd11a9ccb3b68019e6e8cd35aae0a86c755fd22bba1b91bc9a2fe                                                                    0.0s 
+ => => exporting config sha256:8cdf2e9fe18e796ce1396ca72e086d23597600ddbce10570a84c1a8609646713                                                                      0.0s
+ => => exporting attestation manifest sha256:73c90b03a8f9bc97dcfd21d52bffd83f5e7b2575f2e2b0625e40de3e9a930634                                                        0.1s
+ => => exporting manifest list sha256:931e6d56716ea0177c03202a137105e8369c963e4c228897d203425a5f588da8                                                               0.0s
+ => => naming to docker.io/library/tp-optimisation:latest                                                                                                            0.0s
+ => => unpacking to docker.io/library/tp-optimisation:latest                                                                                                         2.0s
+PS C:\Users\lulu1\Documents\Importants\M2\docker\tpdockeroptimisation> docker images
+REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
+tp-optimisation   latest    931e6d56716e   14 seconds ago   1.68GB
