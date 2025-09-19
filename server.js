@@ -1,16 +1,13 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-
+const morgan = require('morgan');
 
 const app = express();
 
 
-// Middleware verbeux et un peu inutile
-app.use((req, res, next) => {
-console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-next();
-});
+// Middleware de log avec morgan
+app.use(morgan('dev'));
 
 
 app.get('/', (req, res) => {
@@ -18,16 +15,22 @@ res.send('Hello world — serveur volontairement non optimisé mais fonctionnel'
 });
 
 
-app.get('/big', (req, res) => {
+app.get('/big', (req, res, next) => {
 const filePath = path.join(__dirname, 'maybe-big-file.txt');
-if (fs.existsSync(filePath)) {
-const data = fs.readFileSync(filePath, 'utf8');
-res.send(data.replace(/\n/g, '<br/>'));
-} else {
-res.send('Fichier introuvable');
-}
+fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) return res.status(404).send('Fichier introuvable');
+
+    const stream = fs.createReadStream(filePath, 'utf8');
+    stream.on('error', next);
+    res.setHeader('Content-Type', 'text/html');
+    stream.pipe(res);
+  });
 });
 
+app.use((err, req, res, next) => {
+console.error(err);
+res.status(500).send('Erreur serveur');
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

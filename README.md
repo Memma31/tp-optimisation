@@ -115,3 +115,8 @@ PS C:\Users\lulu1\Documents\Importants\M2\docker\tpdockeroptimisation> docker bu
 PS C:\Users\lulu1\Documents\Importants\M2\docker\tpdockeroptimisation> docker images
 REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
 tp-optimisation   latest    10d1cdac1af9   10 seconds ago   1.68GB
+
+dans server.js : 
+fs.readFileSync instruction bloquante ---> utilisation de fs.createReadStream
+
+changement du middleware moins verbeux, plus court avec morgen et ajout d'un middleware d'erreur pour les gerer
